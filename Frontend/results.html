@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Portfolio Results</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="index.html">Home</a>
+        <a href="projects.html">Projects</a>
+        <a href="portfolio-builder.html">Portfolio Builder</a>
+    </nav>
+
+    <div class="dashboard-container">
+        <h1>Your Personalized Portfolio</h1>
+
+        <div class="stats-container">
+            <div class="stat-box">
+                <span class="stat-label">Your Risk Score</span>
+                <span id="score-value" class="stat-value">--</span>
+            </div>
+            <div class="stat-box">
+                <span class="stat-label">Expected Return</span>
+                <span id="return-value" class="stat-value">--%</span>
+            </div>
+            <div class="stat-box">
+                <span class="stat-label">Standard Deviation</span>
+                <span id="std-dev-value" class="stat-value">--%</span>
+            </div>
+        </div>
+
+        <div class="visuals-container">
+            <div class="chart-container">
+                <h2>Asset Allocation</h2>
+                <canvas id="allocationChart"></canvas>
+            </div>
+            <div class="table-container">
+                <h2>Allocation Details</h2>
+                <table id="allocations-table">
+                    <thead>
+                        <tr>
+                            <th>Asset</th>
+                            <th>Allocation</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/script.js"></script>
+</body>
+</html>
