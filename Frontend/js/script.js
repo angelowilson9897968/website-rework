@@ -3,9 +3,6 @@
  * This file handles all interactive functionality.
  */
 
-// Start a timer as soon as the JavaScript file loads.
-const startTime = new Date();
-
 // This function is an example of how you can add interactivity.
 function setRiskProfile(profile) {
     alert("You selected the " + profile + " risk profile.");
@@ -17,11 +14,54 @@ document.addEventListener("DOMContentLoaded", function () {
     // --- Logic for the Portfolio Builder (Quiz) page ---
     const form = document.getElementById("risk-form");
     if (form) { 
+        const questions = form.querySelectorAll(".question");
+
+        // --- NEW: LOGIC TO SAVE AND LOAD ANSWERS ---
+
+        // Function to load answers from Local Storage when the page opens
+        const loadAnswers = () => {
+            const savedAnswers = JSON.parse(localStorage.getItem('quizAnswers'));
+            if (savedAnswers) {
+                // Loop through each saved answer
+                Object.keys(savedAnswers).forEach(questionName => {
+                    const value = savedAnswers[questionName];
+                    // Find the radio button that matches the saved answer and check it
+                    const radioToSelect = form.querySelector(`input[name="${questionName}"][value="${value}"]`);
+                    if (radioToSelect) {
+                        radioToSelect.checked = true;
+                    }
+                });
+            }
+        };
+
+        // Function to save all current answers to Local Storage
+        const saveAnswers = () => {
+            const currentAnswers = {};
+            questions.forEach(question => {
+                const selectedAnswer = question.querySelector('input:checked');
+                if (selectedAnswer) {
+                    currentAnswers[selectedAnswer.name] = selectedAnswer.value;
+                }
+            });
+            localStorage.setItem('quizAnswers', JSON.stringify(currentAnswers));
+        };
+
+        // Add an event listener to every radio button. When one is clicked, save all answers.
+        form.querySelectorAll('input[type="radio"]').forEach(radio => {
+            radio.addEventListener('change', saveAnswers);
+        });
+
+        // Load any existing answers as soon as the page loads
+        loadAnswers();
+
+        // --- END OF NEW LOGIC ---
+
+        const startTime = new Date();
+
         form.addEventListener("submit", function (event) {
             event.preventDefault();
 
             let riskScore = 0;
-            const questions = form.querySelectorAll(".question");
             questions.forEach((question) => {
                 const selectedAnswer = question.querySelector("input:checked");
                 if (selectedAnswer) {
@@ -31,6 +71,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
             const endTime = new Date();
             const timeTakenInSeconds = (endTime - startTime) / 1000;
+            
+            // Clear the saved answers after successful submission
+            localStorage.removeItem('quizAnswers');
 
             fetch("http://127.0.0.1:5000/submit", {
                 method: "POST",
@@ -59,20 +102,19 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // === NEW & UPDATED Logic for the Results Page Dashboard ===
+    // === Logic for the Results Page Dashboard ===
     const dashboardContainer = document.querySelector('.dashboard-container');
     if (dashboardContainer) {
+        // ... (The rest of your results page logic remains the same)
         const portfolioDataString = localStorage.getItem("portfolioData");
 
         if (portfolioDataString) {
             const data = JSON.parse(portfolioDataString);
             
-            // 1. Populate Key Statistics Boxes
             document.getElementById('score-value').textContent = data.score;
             document.getElementById('return-value').textContent = data.expected_return;
             document.getElementById('std-dev-value').textContent = data.standard_deviation;
 
-            // 2. Populate the Allocations Table
             const tableBody = document.querySelector("#allocations-table tbody");
             data.assets.forEach(asset => {
                 const row = document.createElement('tr');
@@ -83,7 +125,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 tableBody.appendChild(row);
             });
 
-            // 3. Create the Pie Chart using Chart.js
             const ctx = document.getElementById('allocationChart').getContext('2d');
             
             const labels = data.assets.map(asset => asset.name);

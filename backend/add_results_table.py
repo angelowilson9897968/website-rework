@@ -1,7 +1,7 @@
 import sqlite3
 
 # Connect to the existing database
-conn = sqlite3.connect('/data/portfolios.db')
+conn = sqlite3.connect('portfolios.db')
 cursor = conn.cursor()
 
 # Create the new 'results' table to store user submissions

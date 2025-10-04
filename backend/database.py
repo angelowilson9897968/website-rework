@@ -1,7 +1,7 @@
 import sqlite3
 
 def setup_database():
-    conn = sqlite3.connect('/data/portfolios.db')
+    conn = sqlite3.connect('portfolios.db')
     cursor = conn.cursor()
 
     # Create tables
