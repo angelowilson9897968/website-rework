@@ -19,6 +19,11 @@ if not DATABASE_URL:
 
 engine = create_engine(DATABASE_URL)
 
+# Route for the homepage to confirm the API is running
+@app.route('/')
+def index():
+    return "API is running. Use the /submit endpoint to post data."
+
 @app.route('/submit', methods=['POST'])
 def submit():
     try:
