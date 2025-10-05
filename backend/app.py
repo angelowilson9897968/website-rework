@@ -1,8 +1,3 @@
-4. Update the app.py File
-Replace the entire content of your backend/app.py file with this "smart" version that can connect to both SQLite and PostgreSQL.
-
-Python
-
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import os
