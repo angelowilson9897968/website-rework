@@ -75,7 +75,8 @@ document.addEventListener("DOMContentLoaded", function () {
             // Clear the saved answers after successful submission
             localStorage.removeItem('quizAnswers');
 
-            fetch("http://127.0.0.1:5000/submit", {
+            // --- THIS IS THE UPDATED PART ---
+            fetch("https://website-rework-3.onrender.com/submit", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -97,7 +98,7 @@ document.addEventListener("DOMContentLoaded", function () {
             })
             .catch(error => {
                 console.error("Error:", error);
-                alert("Failed to connect to the server. Make sure Flask is running!");
+                alert("Failed to connect to the server. Please try again later.");
             });
         });
     }
